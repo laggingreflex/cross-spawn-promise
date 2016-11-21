@@ -18,6 +18,7 @@
   "scripts": {
     "clean": "gulp clean",
     "build": "gulp build",
+    "watch": "gulp watch",
     "prepublish": "in-publish && npm run build || not-in-publish",
     "test": "gulp test"
   },
