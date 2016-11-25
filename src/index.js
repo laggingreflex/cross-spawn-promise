@@ -46,6 +46,9 @@ const concatBuffer = (buffer) => {
 export default (cmd, args, options = {}) => {
   let childProcess
   const promise = new Promise((resolve, reject) => {
+    const encoding = options.encoding
+    delete options.encoding
+
     childProcess = crossSpawn(cmd, args, options)
 
     let stdout = null
@@ -53,12 +56,18 @@ export default (cmd, args, options = {}) => {
     const [ignoreStdout, ignoreStderr] = parseStdioOption(options.stdio)
     if (!ignoreStdout) {
       stdout = []
+      if (encoding) {
+        childProcess.stdout.setEncoding(encoding)
+      }
       childProcess.stdout.on('data', (data) => {
         stdout.push(data)
       })
     }
     if (!ignoreStderr) {
       stderr = []
+      if (encoding) {
+        childProcess.stderr.setEncoding(encoding)
+      }
       childProcess.stderr.on('data', (data) => {
         stderr.push(data)
       })
